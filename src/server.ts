@@ -1,8 +1,8 @@
-import express from 'express';
-
-// Crea un'app Express
+import express, { Router } from 'express';
+import commentRouter from './comment';
 const app = express();
 app.use(express.json());
+app.use('/com', commentRouter); // Utilizza il router dei commenti
 
 const InputValidationMiddelware: express.RequestHandler = 
 (req, res, next) => 
@@ -97,14 +97,12 @@ app.put('/posts/:id', (req, res) => {
     const updatedTitle = req.body.title;
     const updatedBody = req.body.body;
 
-    // Trova il post con l'ID specificato
     const postToUpdate = posts.find((p) => p.id === id);
 
     if (!postToUpdate) {
         return res.status(404).send("Post non trovato");
     }
 
-    // Aggiorna il titolo e il corpo del post
     postToUpdate.title = updatedTitle;
     postToUpdate.body = updatedBody;
 
